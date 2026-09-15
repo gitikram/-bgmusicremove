@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Node
+node_modules/
+frontend/dist/
+
+# App data (jobs, uploads, stems, model caches)
+backend/data/
+data/
+
+# Env & secrets
+.env
+backend/.env
+
+# OS / editor / IDE-local
+.DS_Store
+Thumbs.db
+*.log
+.qoder/

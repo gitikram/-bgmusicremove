@@ -1,0 +1,22 @@
+# Web API
+fastapi>=0.110
+uvicorn[standard]>=0.29
+python-multipart>=0.0.9
+pydantic>=2.6
+pydantic-settings>=2.2
+
+# Queue (only needed when REDIS_URL is set)
+redis>=5.0
+rq>=1.16
+
+# Media ingestion
+yt-dlp>=2024.10.7
+
+# AI separation (CPU wheels by default; see Dockerfile.gpu for CUDA builds)
+torch>=2.1
+torchaudio>=2.1
+demucs>=4.0.1
+soundfile>=0.12
+
+# Dev / tests
+pytest>=8.0

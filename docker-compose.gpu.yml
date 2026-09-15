@@ -1,0 +1,15 @@
+# GPU override: swaps the worker to the CUDA build and attaches the host GPU.
+# Usage: docker compose -f docker-compose.yml -f docker-compose.gpu.yml up --build
+
+services:
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.gpu
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]

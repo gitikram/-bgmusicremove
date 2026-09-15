@@ -1,0 +1,44 @@
+# ClearVoice - CPU stack (Redis queue + API + worker + frontend).
+# GPU override: docker compose -f docker-compose.yml -f docker-compose.gpu.yml up --build
+
+services:
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+
+  api:
+    build: ./backend
+    restart: unless-stopped
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      DATA_DIR: /data
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:8080,http://localhost:5173}
+    volumes:
+      - data:/data
+    depends_on:
+      - redis
+
+  worker:
+    build: ./backend
+    command: python -m app.worker
+    restart: unless-stopped
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      DATA_DIR: /data
+      DEMUCS_MODEL: ${DEMUCS_MODEL:-htdemucs_ft}
+      DEVICE: ${DEVICE:-auto}
+    volumes:
+      - data:/data
+    depends_on:
+      - redis
+
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    ports:
+      - '8080:80'
+    depends_on:
+      - api
+
+volumes:
+  data:
